@@ -23,7 +23,6 @@ Numcol = 14
 learning_rate = 1e-4
 num_epochs = 10000
  
-seq_length = 15
 dir_prefix = "data/"
 
 X_A = np.load(dir_prefix + "X_A" + ".npy")
@@ -51,10 +50,6 @@ _, _, _, _, X_G, y_G = MinMaxScale(X_G, y_G)
 X = np.concatenate((X_A, X_B, X_C, X_D, X_E, X_F, X_G), axis = 1)
 y = np.concatenate((y_A, y_B, y_C, y_D, y_E, y_F, y_G), axis = 1)
 
-"""
-Create dataloaders to feed data into the neural network
-Default MNIST dataset is used and standard train/test split is performed
-"""    
 # Train Data 
 X_train = X[:int(0.8*len(X))] 
 X_test = X[int(0.8*len(X)):]
