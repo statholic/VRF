@@ -63,10 +63,6 @@ X_test = X[int(0.8*len(X)):]
 y_train = y[:int(0.8*len(X))] 
 y_test = y[int(0.8*len(X)):] 
 
-dt = np.load("date_rate.npy",allow_pickle=True)
-date_train = np.array([date.fromisoformat(x) for x in dt[:int(0.8*len(X))]])
-date_test = np.array([date.fromisoformat(x) for x in dt[int(0.8*len(X)):]])
-
 X_train = make_Tensor(X_train)
 y_train = make_Tensor(y_train)
 X_test = make_Tensor(X_test)
