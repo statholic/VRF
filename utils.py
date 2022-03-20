@@ -14,6 +14,5 @@ def MinMaxScale(X, y):
     
     return MIN0, MAX0, MIN1, MAX1, X, y
 
-# Tensor 형태로 변환
 def make_Tensor(array):
     return torch.from_numpy(array).float()
