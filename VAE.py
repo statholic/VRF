@@ -14,7 +14,6 @@ class VAE(nn.Module):
 
         self.pzFC0 = weight_norm(nn.Linear(zDim, InterDim*Numcol), name = 'weight')
 
-        # Initializing the 2 convolutional layers and 2 full-connected layers for the encoder
         self.encFC0 = nn.Linear(featureDim, featureDim)
         self.encFC1 = nn.Linear(featureDim, InterDim)
         self.encFC2 = nn.Linear(InterDim, InterDim)
@@ -25,15 +24,11 @@ class VAE(nn.Module):
         self.encFC6 = nn.Linear(InterDim, zDim)
         self.encFC6_1 = nn.Linear(Numcol, zDim)
 
-        # Initializing the fully-connected layer and 2 convolutional layers for decoder
         self.decFC0 = nn.Linear(InterDim, InterDim)
         self.decFC1 = nn.Linear(InterDim, featureDim)
 
     def encoder(self, x):
 
-        # Input is fed into 2 convolutional layers sequentially
-        # The output feature map are fed into 2 fully-connected layers to predict mean (mu) and variance (logVar)
-        # Mu and logVar are used for generating middle representation z and KL divergence loss
         x = x.view(-1, self.featureDim)
         x = torch.tanh(self.encFC0(x)).to(self.device)
         x = torch.tanh(self.encFC1(x)).to(self.device)
@@ -50,14 +45,12 @@ class VAE(nn.Module):
 
     def reparameterize1(self, mu, logVar):
 
-        #Reparameterization takes in the input mu and logVar and sample the mu + std * eps
         std1 = torch.exp(logVar/2).to(self.device)
         eps1 = torch.randn_like(std1).to(self.device)
         return mu + std1 * eps1
     
     def reparameterize2(self, mu_y, var_log_y):
         
-        #Reparameterization takes in the input mu and logVar and sample the mu + std * eps
         std2 = torch.exp(var_log_y/2).to(self.device)
         eps2 = torch.randn_like(std2).to(self.device)
         return mu_y + std2 * eps2
@@ -65,16 +58,12 @@ class VAE(nn.Module):
 
     def decoder(self, z):
 
-        # z is fed back into a fully-connected layers and then into two transpose convolutional layers
-        # The generated output is the same size of the original input
         x = self.decFC0(z).to(self.device)
         x = self.decFC1(x).to(self.device)
         return x
 
     def forward(self, x):
 
-        # The entire pipeline of the VAE: encoder -> reparameterization -> decoder
-        # output, mu, and logVar are returned for loss computation
         mu, logVar, mu_y, var_log_y = self.encoder(x)
         z = self.reparameterize1(mu, logVar)
         y_f = self.reparameterize2(mu_y, var_log_y)
