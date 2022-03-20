@@ -6,7 +6,7 @@ import os
 import random
 from utils import MinMaxScale
 from utils import make_Tensor
-from VAE import VAE
+from VRF import VRF
 from sklearn.manifold import MDS
 from datetime import date
 from sklearn.manifold import TSNE
@@ -20,7 +20,7 @@ os.environ['KMP_DUPLICATE_LIB_OK']='True'
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(device)
 
-# VAE parameters
+# VRF parameters
 featureDim = 15
 InterDim = 7
 Numcol = 14
@@ -29,7 +29,7 @@ Numcol = 14
 learning_rate = 1e-4
 num_epochs = 100
 
-model = VAE(Numcol=Numcol, InterDim=InterDim, featureDim=featureDim).to(device)
+model = VRF(Numcol=Numcol, InterDim=InterDim, featureDim=featureDim).to(device)
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
  
 dir_prefix = "data/"
@@ -59,11 +59,9 @@ _, _, _, _, X_G, y_G = MinMaxScale(X_G, y_G)
 X = np.concatenate((X_A, X_B, X_C, X_D, X_E, X_F, X_G), axis = 1)
 y = np.concatenate((y_A, y_B, y_C, y_D, y_E, y_F, y_G), axis = 1)
    
-# Train Data 
 X_train = X[:int(0.8*len(X))] 
 X_test = X[int(0.8*len(X)):]
 
-# Test Data 
 y_train = y[:int(0.8*len(X))] 
 y_test = y[int(0.8*len(X)):] 
 
@@ -71,11 +69,6 @@ X_train = make_Tensor(X_train)
 y_train = make_Tensor(y_train)
 X_test = make_Tensor(X_test)
 y_test = make_Tensor(y_test)
-
-"""
-The following part takes a random image from test loader to feed into the VAE.
-Both the original image and generated image from the distribution are shown.
-"""
 
 # Test set save
 mu_z_test = []
@@ -125,7 +118,7 @@ for i in range(mu_z_test.shape[1]):
         color=outy_test.reshape(-1)
         )
     fig.update_traces(marker_size=1)
-    fig.write_image("./tsne_3d/result_tsne_rate15000_" + str(i+1) + "th.png")
+    fig.write_image("./tsne_3d/result_tsne_data_" + str(i+1) + "th.png")
     fig.show()
 
 features = mu_z_test[:, 0, :]
@@ -135,6 +128,6 @@ projections = pd.DataFrame(projections)
 outy_test = pd.Series(outy_test)
 all_proj = pd.concat([outy_test, projections], axis = 1)
 all_proj.columns = ["Result", "X", "Y", "Z"]
-all_proj.to_excel("Rate_TSNE_15000.xlsx")
+all_proj.to_excel("Data_TSNE_15000.xlsx")
 
 mu.shape

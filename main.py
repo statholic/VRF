@@ -3,7 +3,7 @@ import torch.nn.functional as F
 import numpy as np
 import random
 import os
-from VAE import VAE
+from VRF import VRF
 from utils import MinMaxScale
 from utils import make_Tensor
 from datetime import date
@@ -14,7 +14,7 @@ os.environ['KMP_DUPLICATE_LIB_OK']='True'
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(device)
 
-# VAE parameters
+# VRF parameters
 featureDim = 15
 InterDim = 10
 Numcol = 14
@@ -64,7 +64,7 @@ X_test = make_Tensor(X_test)
 y_test = make_Tensor(y_test)
 
 # Initialize the network and the Adam optimizer
-net = VAE(Numcol=Numcol, InterDim=InterDim, featureDim=featureDim).to(device)
+net = VRF(Numcol=Numcol, InterDim=InterDim, featureDim=featureDim).to(device)
 optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
 
 # Training the network for a given number of epochs
@@ -99,4 +99,4 @@ for epoch in range(num_epochs):
             'model' : net.state_dict(),
             'optimizer' : optimizer.state_dict(),
             'loss' : loss
-        }, "all_rate" + str(epoch+1) + ".tar")
+        }, "all_data" + str(epoch+1) + ".tar")

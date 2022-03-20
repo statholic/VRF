@@ -7,13 +7,13 @@ def d(series,i,j):
 
 # assign your file path at cwd
 cwd = ""
-f=pd.read_csv(cwd + "Rate.csv")
-f=(f['Korea']-f['Korea'].mean())/f['Korea'].std()
+f=pd.read_csv(cwd + "data.csv")
+f=(f['A']-f['A'].mean())/f['A'].std()
 series=[float(i) for i in f]
 N=len(series)
 eps=float(input('Initial diameter bound: '))
 dlist=[[] for i in range(N)]
-n=0 #number of nearby pairs found
+n=0
 for i in range(N):
     for j in range(i+1,N):
         if d(series,i,j) < eps:
@@ -24,13 +24,13 @@ for i in range(N):
                     pass
                 else:
                     dlist[k].append(log(d(series,i+k,j+k)))
-lyapunov_rate = []
+lyapunov_data = []
 for i in range(len(dlist)):
     if len(dlist[i]):
-        lyapunov_rate.append(sum(dlist[i])/len(dlist[i]))
-lyapunov_rate = pd.Series(lyapunov_rate)
-lyapunov_rate.to_excel(cwd + "lyapunov_rate.xlsx")
+        lyapunov_data.append(sum(dlist[i])/len(dlist[i]))
+lyapunov_data = pd.Series(lyapunov_data)
+lyapunov_data.to_excel(cwd + "lyapunov_data.xlsx")
 
-plt.plot(lyapunov_rate)
+plt.plot(lyapunov_data)
 
-lyapunov_rate.max()
+lyapunov_data.max()

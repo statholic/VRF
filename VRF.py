@@ -2,9 +2,9 @@ import torch
 import torch.nn as nn
 from torch.nn.utils import weight_norm
 
-class VAE(nn.Module):
+class VRF(nn.Module):
     def __init__(self, inChannels=1, OutChannels=1, InterDim=10, featureDim=15, zDim=1, Numcol=14):
-        super(VAE, self).__init__()
+        super(VRF, self).__init__()
         
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.featureDim = featureDim
