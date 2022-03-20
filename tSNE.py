@@ -27,7 +27,6 @@ Numcol = 14
 
 # Initialize Hyperparameters
 learning_rate = 1e-4
-num_epochs = 100
 
 model = VRF(Numcol=Numcol, InterDim=InterDim, featureDim=featureDim).to(device)
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
@@ -97,7 +96,7 @@ with torch.no_grad():
         y = y_train[idx][:1,:]
         y = y.view(-1, 1)
         y = y.to(device)        
-        out, mu, logVar, mu_y, var_log_y, pz_mean = model(x)
+        mu, logVar, mu_y, var_log_y, pz_mean = model(x)
         mu_z_train.append(mu.detach().cpu().numpy())
         outy_train.append(y.detach().cpu().numpy()[0][0])
     
@@ -120,14 +119,3 @@ for i in range(mu_z_test.shape[1]):
     fig.update_traces(marker_size=1)
     fig.write_image("./tsne_3d/result_tsne_data_" + str(i+1) + "th.png")
     fig.show()
-
-features = mu_z_test[:, 0, :]
-tsne = TSNE(n_components=3, random_state=0)
-projections = tsne.fit_transform(features, )
-projections = pd.DataFrame(projections)
-outy_test = pd.Series(outy_test)
-all_proj = pd.concat([outy_test, projections], axis = 1)
-all_proj.columns = ["Result", "X", "Y", "Z"]
-all_proj.to_excel("Data_TSNE_15000.xlsx")
-
-mu.shape
