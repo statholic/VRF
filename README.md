@@ -2,4 +2,4 @@
 VAE for regression in finance(work in progress)
 
 
-![현상논문 drawio](https://user-images.githubusercontent.com/93754379/159150978-4a417bf7-6c9c-47a3-9b70-b06e10643481.png)
+![현상논문](https://user-images.githubusercontent.com/93754379/160514359-dffc9715-6985-4b59-a24f-f617880b5229.png)
