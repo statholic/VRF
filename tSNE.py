@@ -103,8 +103,6 @@ with torch.no_grad():
 mu_z_train = np.array(mu_z_train)    
 outy_train = np.array(outy_train)
 
-pyo.init_notebook_mode()
-
 for i in range(mu_z_test.shape[1]):
     #extract last features only
     features = mu_z_test[:, i, :]
