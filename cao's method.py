@@ -1,15 +1,14 @@
 import pandas as pd
 import numpy as np
 import os
+import matplotlib.pyplot as plt 
 
-#경로정하기 및 data다운로드
 os.chdir("file path")
 
 data = pd.read_csv("data.csv")
 df = data.iloc[:,1:]; df.index = data.date
 df = df.dropna()
 
-#seq길이 및 랜덤생성정하기
 def create_sequences(data, seq_length):
     xs = []
     for i in range(len(data)-seq_length):
@@ -57,8 +56,6 @@ for j in range(1):
             for seq_length in range(1,30):
                 lst_seq[col][k].append(totalCao(df.iloc[:,j][205*k:], seq_length))
                 print(seq_length) 
-        
-import matplotlib.pyplot as plt 
 
 for k in range(n):
     plt.plot(lst_seq['Nation'][k], label = str(k+1)+"th")
