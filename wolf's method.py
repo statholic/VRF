@@ -1,3 +1,5 @@
+# This code is from "https://blog.abhranil.net/2014/07/22/calculating-the-lyapunov-exponent-of-a-time-series-with-python-code/"
+
 from math import log
 import pandas as pd
 import matplotlib.pyplot as plt 
