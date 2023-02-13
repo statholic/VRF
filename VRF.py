@@ -9,7 +9,7 @@ class VRF(nn.Module):
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.featureDim = featureDim
         self.InterDim = InterDim
-        self.zDIm = zDim
+        self.zDim = zDim
         self.Numcol = Numcol
 
         self.pzFC0 = weight_norm(nn.Linear(zDim, InterDim*Numcol), name = 'weight')
